@@ -1,0 +1,187 @@
+\documentclass[a4paper,oneside,12pt]{memoir} % jednostrano: promijeniti twoside u oneside
+
+% Paket inputenc omogucava direktno unosenje hrvatskih dijakritickih znakova 
+% opcija utf8 za unicode (unix, linux, mac)
+% opcija cp1250 za windowse
+\usepackage[utf8]{inputenc}  % ukoliko se koristi XeLaTeX onda je \usepackage{xunicode}\usepackage{xltxtra}
+
+% Stil za diplomski, unutra je ukljucena podrska za hrvatski jezik
+\usepackage{diplomski}
+% bibliografija na hrvatskom
+\usepackage[languagenames,fixlanguage,croatian]{babelbib} % zahtijeva datoteku croatian.bdf
+% hiperlinkovi 
+\usepackage[pdftex]{hyperref} % ukoliko se koristi XeLaTeX onda je \usepackage[xetex]{hyperref}
+
+% Odabir familije fontova:
+% koristenjem XeLaTeX-a mogu se koristiti svi fontovi instalirani na racunalu, npr
+% \defaultfontfeatures{Mapping=tex-text}
+% \setmainfont[Ligatures={Common}]{Hoefler Text}
+% ili
+% \newcommand{\nas}[1]{\fontspec{Adobe Garamond Pro}\fontsize{24pt}{24pt}\color{Chocolate}\selectfont #1}
+% i onda \nas{Naslov ...}
+\usepackage{txfonts} % times new roman 
+
+\usepackage{amsmath}
+
+% Paket graphicx sluzi za manipuliranje grafikom 
+\usepackage[pdftex]{graphicx} % ukoliko se koristi XeLaTeX onda je \usepackage[xetex]{graphicx}
+% Paket amsmath je vec ukljucen
+% Dodatno definirane matematicke okoline:
+% teorem (okolina: thm), lema (okolina: lem), korolar (okolina: cor),
+% propozicija (okolina: prop), definicija (okolina: defn), napomena (okolina: rem),
+% slutnja (okolina: conj), primjer (okolina: exa), dokaz (okolina: proof)
+% Definirane su naredbe za ispisivanje skupova N, Z, Q, R i C
+% Definirane su naredbe za funkcije koje se u hrvatskoj notaciji oznacavaju drukcije 
+% nego u americkoj: tg, ctg, ... (\tgh za tangens hiperbolni)
+% Takodjer su definirane naredbe za Ker i Im (da bi se razlikovala od naredbe za imaginarni dio kompleksnog
+% broja, naredba se zove \slika).
+
+\pagestyle{headings}
+% uz paket fancyhdr mogu se lako kreirati fancy zaglavlja i podnozja
+\pagestyle{empty}
+
+\begin{document}
+
+\subsubsection*{Mehanika fluida \\ Ivana Bobinac, Zadatak 2}	
+$ $
+\textbf{Zadana je funkcija $V$ na $\mathcal{U} = \mathbb{R} \backslash \{0\}$ sa $V(r,\varphi) = \frac{1}{2 \pi} \varphi$. Izračunajmo $\nabla V$.}  \\
+Polarne koordinate su dane sa:
+\begin{align*}
+x_1 &= r cos \varphi,\\
+x_2 &= r sin \varphi.
+\end{align*}
+
+Kako je
+\begin{align*}
+r &= \sqrt{x_1^2 + x_2^2}, \\
+\varphi &= arctg\frac{x_2}{x_1},
+\end{align*}
+funkcija $V$ je u Kartezijevim koordinatama dana sa 
+\begin{equation*}
+V(x_1,x_2) = \frac{1}{2 \pi} arctg\frac{x_2}{x_1}.
+\end{equation*}
+
+Računamo:
+\begin{align*}
+\partial_1 V(x_1,x_2) &= \frac{1}{2 \pi} \frac{1}{1+\frac{x_2}{x_1}^2}\frac{-x_2}{x_1^2} = \frac{1}{2 \pi} \frac{-x_2}{x_1^2 + x_2^2},\\
+\partial_2 V(x_1,x_2) &= \frac{1}{2 \pi} \frac{1}{1+\frac{x_2}{x_1}^2}\frac{1}{x_1} = \frac{1}{2 \pi} \frac{1}{\frac{x_1^2 + x_2^2}{x_1}} = \frac{1}{2 \pi} \frac{x_1}{x_1^2 + x_2^2}.
+\end{align*}
+
+Vraćanjem na polarne koordinate imamo
+\begin{align*}
+\partial_1 V(r,\varphi) &= \frac{1}{2 \pi} \frac{-r sin\varphi}{r^2} = \frac{1}{2 \pi} \frac{1}{r}(-sin\varphi),\\
+\partial_2 V(r,\varphi) &= \frac{1}{2 \pi} \frac{r cos\varphi}{r^2} = \frac{1}{2 \pi} \frac{1}{r}(cos\varphi).
+\end{align*}
+
+Dakle, sve skupa dobivamo traženo:
+\begin{equation*}
+\nabla V(r,\varphi) = \frac{1}{2 \pi} \frac{1}{r} \begin{bmatrix}
+   												      -sin \varphi \\
+ 											           cos \varphi
+  											      \end{bmatrix}.
+\end{equation*}
+$ $\\
+$ $\\
+\textbf{Izračunajmo protok i cirkulaciju od $v:=\nabla V$ na kružnici radijusa $R$ sa središtem u ishodištu.} Protok i cirkulacija su, po definiciji, redom:
+\begin{align*}
+protok &= I_P = \int_\Gamma v \cdot n d\gamma \\
+cirkulacija &= I_C = \int_\Gamma v \cdot \tau d\gamma
+\end{align*}
+Dakle, zadana krivulja $\Gamma$ je $\partial K(0,R)$  koju parametriziramo sa \\
+$\gamma : [0, 2\pi] \rightarrow \mathbb{R}^2$, \; $\gamma(t) = (Rcost,\; Rsint)$. Vrijedi: $\gamma'(t) = (-Rsint, \; Rcost)$ te $\Vert \gamma'(t) \Vert = R$.
+Zapišimo $v$ u Kartezijevim koordinatama:
+\begin{equation*}
+v(x_1,x_2) = \frac{1}{2\pi}\frac{1}{x_1^2+x_2^2} \begin{bmatrix}
+   												      -x_2 \\
+ 											           x_1
+  											      \end{bmatrix}.
+\end{equation*}
+Sada imamo:
+\begin{equation*}
+v(\gamma(t)) = v(Rcost, Rsint) = \frac{1}{2\pi}\frac{1}{R^2} \begin{bmatrix}
+   												  		       -Rsint \\
+ 											      		        Rcost
+  											    		     \end{bmatrix} 
+  							   = \frac{1}{2\pi}\frac{1}{R} \begin{bmatrix}
+   												     		   -sint \\
+ 											        		    cost
+  											   			   \end{bmatrix}.
+\end{equation*}
+Jedinična tangenta je dana sa:
+\begin{equation*}
+\tau = \frac{\gamma'(t)}{\Vert \gamma'(t) \Vert} = \begin{bmatrix}
+   												       -sint \\
+ 											        	cost
+  											   		\end{bmatrix},
+\end{equation*}
+a normala sa:
+\begin{equation*}
+n = \tau \; x \; e_3 = \begin{bmatrix}
+   					 cost \\
+ 					 sint
+  				 \end{bmatrix}.
+\end{equation*}
+Sada imamo:
+\begin{equation*}
+I_C = \int_\Gamma v \cdot \tau d\gamma = \int_0^{2\pi} v(\gamma(t)) \cdot \frac{\gamma'(t)}{\Vert \gamma'(t) \Vert} \Vert \gamma'(t) \Vert dt = \int_0^{2\pi} v(\gamma(t)) \cdot \gamma'(t)  dt.
+\end{equation*}
+Kako je
+\begin{equation*}
+v(\gamma(t)) \cdot \gamma'(t) = \frac{1}{2\pi}\frac{1}{R} R \begin{bmatrix}
+   												     		   -sint \\
+ 											        		    cost
+  											   			   \end{bmatrix} 
+  											   \cdot 	   \begin{bmatrix}
+   												     		   -sint \\
+ 											        		    cost
+  											   			   \end{bmatrix}
+  							  = \frac{1}{2\pi} (sin^2t + cos^2t) = \frac{1}{2\pi},
+\end{equation*}
+konačno imamo
+\begin{equation*}
+I_C = \int_0^{2\pi} \frac{1}{2\pi} dt = 1.
+\end{equation*}
+Za protok, računamo
+\begin{equation*}
+v(\gamma(t)) \cdot n = \frac{1}{2\pi}\frac{1}{R} \begin{bmatrix}
+   												     -sint \\
+ 											          cost
+  											   	 \end{bmatrix} 
+  											   \cdot 	   \begin{bmatrix}
+   												     		    cost \\
+ 											        		    sint
+  											   			   \end{bmatrix}
+  					 = \frac{1}{2\pi}\frac{1}{R} (-sintcost + costsint) = 0
+\end{equation*}
+pa je
+\begin{equation*}
+I_P = \int_0^{2\pi} 0 dt = 0.
+\end{equation*}
+$ $\\
+$ $\\
+\textbf{Pokažimo još da vrijedi: $div v = div \nabla V = \Delta V = 0$.} \\
+Ranije smo izračunali parcijalne derivacije ove funkcije pa derivirajući parcijalno te izraze još jednom po istim varijablama dobivamo:
+\begin{align*}
+\partial_{11} V(x_1,x_2) &= \frac{1}{2 \pi} \frac{2x_1 x_2}{(x_1^2+x_2^2)^2} = \frac{1}{\pi} \frac{x_1 x_2}{(x_1^2 + x_2^2)^2},\\
+\partial_{22} V(x_1,x_2) &= \frac{1}{2 \pi} \frac{-x_1 2x_2}{(x_1^2+x_2^2)^2} = \frac{1}{\pi} \frac{-x_1 x_2}{(x_1^2 + x_2^2)^2}.
+\end{align*}
+Sada je očito $\Delta V = \partial_{11} V + \partial_{22} V = 0$.
+$ $\\
+$ $\\
+$ $\\
+$ $\\
+\textbf{Pokažimo sljedeće:\\
+Neka je $f:\mathbb{R}^3 \rightarrow \mathbb{R}$ dovoljno glatka. Tada je $rot \nabla f = 0$.}\\
+$ $\\
+Vrijedi $\nabla f = (\partial_1 f,\partial_2 f,\partial_3 f)$.\\
+Rotacija vektorske funkcije $F$ je dana sa $rotF = (\partial_2 F_3 - \partial_3 F_2,\partial_3 F_1 - \partial_1 F_3, \partial_1 F_2 - \partial_2 F_1)$.
+Dakle, imamo:
+\begin{equation*}
+rot\nabla f = (\partial_2(\partial_3 f) - \partial_3(\partial_2 f), \partial_3(\partial_1 f) - \partial_1(\partial_3 f), \partial_1(\partial_2 f) - \partial_2(\partial_1 f)).
+\end{equation*}
+Iz pretpostavke dovoljne glatkoće od $f$, imamo simetričnost Hesseove matrice, odnosno vrijedi
+\begin{equation*}
+\frac{\partial^2 f}{\partial x_i \partial x_j} = \frac{\partial^2 f}{\partial x_j \partial x_i}, \; \forall \; i, \; j \in \{1, 2, 3\}.
+\end{equation*}
+Sada je očito da je $rot \nabla f = 0$.
+\end{document}

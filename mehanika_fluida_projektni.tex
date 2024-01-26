@@ -1,0 +1,431 @@
+\documentclass[a4paper,oneside,12pt]{memoir} % jednostrano: promijeniti twoside u oneside
+
+% Paket inputenc omogucava direktno unosenje hrvatskih dijakritickih znakova 
+% opcija utf8 za unicode (unix, linux, mac)
+% opcija cp1250 za windowse
+\usepackage[utf8]{inputenc}  % ukoliko se koristi XeLaTeX onda je \usepackage{xunicode}\usepackage{xltxtra}
+
+% Stil za diplomski, unutra je ukljucena podrska za hrvatski jezik
+\usepackage{diplomski}
+% bibliografija na hrvatskom
+\usepackage[languagenames,fixlanguage,croatian]{babelbib} % zahtijeva datoteku croatian.bdf
+% hiperlinkovi 
+\usepackage[pdftex]{hyperref} % ukoliko se koristi XeLaTeX onda je \usepackage[xetex]{hyperref}
+
+% Odabir familije fontova:
+% koristenjem XeLaTeX-a mogu se koristiti svi fontovi instalirani na racunalu, npr
+% \defaultfontfeatures{Mapping=tex-text}
+% \setmainfont[Ligatures={Common}]{Hoefler Text}
+% ili
+% \newcommand{\nas}[1]{\fontspec{Adobe Garamond Pro}\fontsize{24pt}{24pt}\color{Chocolate}\selectfont #1}
+% i onda \nas{Naslov ...}
+\usepackage{txfonts} % times new roman 
+
+\usepackage{amsmath, upgreek, amssymb}
+
+\newtheorem{teorem}{Teorem}
+\newtheorem{definicija}[teorem]{Definicija}
+\newtheorem{nap}[teorem]{Napomena}
+
+\newtheorem{problem}{Problem}
+\newtheorem*{problem*}{Problem}
+\newtheorem*{oznake}{Oznake}
+\newtheorem{tvrdnja}[teorem]{Tvrdnja}
+
+% Paket graphicx sluzi za manipuliranje grafikom 
+
+%\usepackage[pdftex]{graphicx} % ukoliko se koristi XeLaTeX onda je \usepackage[xetex]{graphicx}
+
+% Paket amsmath je vec ukljucen
+% Dodatno definirane matematicke okoline:
+% teorem (okolina: thm), lema (okolina: lem), korolar (okolina: cor),
+% propozicija (okolina: prop), definicija (okolina: defn), napomena (okolina: rem),
+% slutnja (okolina: conj), primjer (okolina: exa), dokaz (okolina: proof)
+% Definirane su naredbe za ispisivanje skupova N, Z, Q, R i C
+% Definirane su naredbe za funkcije koje se u hrvatskoj notaciji oznacavaju drukcije 
+% nego u americkoj: tg, ctg, ... (\tgh za tangens hiperbolni)
+% Takodjer su definirane naredbe za Ker i Im (da bi se razlikovala od naredbe za imaginarni dio kompleksnog
+% broja, naredba se zove \slika).
+
+\pagestyle{headings}
+% uz paket fancyhdr mogu se lako kreirati fancy zaglavlja i podnozja
+\pagestyle{empty}
+
+\begin{document}
+
+\subsubsection*{Mehanika fluida \\ Ivana Bobinac, Projektni zadatak: 2D optjecanje profila sa šiljkom}	
+$ $
+Problem koji proučavamo je sljedeći:
+
+\begin{problem} \label{pr:1}
+Stacionaran, bezvrtložan tok idealnog fluida oko profila sa šiljkom.
+\end{problem}
+
+
+\begin{definicija}
+Ograničeno 1-povezano područje $P \subseteq \mathbb{R}^2$ nazivamo profil.
+\end{definicija}
+
+Nadalje će $P$ označavati profil koji ima šiljak s vanjskim otvorom $\beta \pi, \; 1 < \beta \leq 2,$ u nekoj točki $T$.
+
+
+\begin{oznake}
+\begin{flalign*}
+\tilde{\Omega} & \; 1-povezano \; ograniceno \; podrucje \; t.d. \; P \subset \subset \tilde{\Omega}&&\\
+\Omega &= \bar{\Omega} \backslash \bar{P} \; fluid, &&\\
+S_1 &= \partial P \; granica \; profila, &&\\
+S &= \partial \Omega, &&\\
+S_0 &= S \backslash S_1 \; vanjska \; granica \; fluida, &&\\
+\nu(x),&\; x \in S \; vanjska \; jedinicna \; normala.
+\end{flalign*}
+\end{oznake}
+
+
+Matematička formulacija Problema \ref{pr:1} je sljedeća:
+
+\begin{problem} \label{pr:2}
+\[
+	(P2) \left\{
+		\begin{array}{ll}
+			div v = 0 \; u \; \Omega, \\
+			rot v = 0 \; u \; \Omega, \\
+			v \cdot \nu = g \; na \; S,
+		\end{array}
+		\right.
+\]
+gdje je $g$ zadana funkcija za koju vrijedi $g_{\big|S_1} = 0$ i $\int_{\partial \Omega} g = 0$.
+\end{problem}
+
+
+Želimo preformulirati (P\ref{pr:2}) kao Neumannov problem. 
+
+\begin{teorem}
+Neka je $\Omega$ 1-povezano područje i neka je tok bezvrtložan. Tada je tok i potencijalan.
+\end{teorem}
+\begin{proof}
+Dokazano na predavanjima.
+\end{proof}
+
+Kada bi $S$ bila glatka krivulja, imali bi jedinstveno rješenje $v = \nabla u$, gdje je $u$ rješenje Neumannove zadaće
+  \[
+    (**) \left\{
+                \begin{array}{ll}
+                  \Delta u = 0 \; u \; \Omega, \\
+                  \frac{\partial u}{\partial \nu} = g \; na \; S.
+                \end{array}
+              \right.
+  \]
+
+No $S$ nije glatko (šiljak u nekoj točki $T$) te je stoga narušena regularnost rješenja.
+
+Vidimo da uvjet $(**)_2$ nema smisla, no znamo da je ograničena funkcija $u$ rješenje zadaće $(**)$ ako i samo ako za svaku funkciju $w$ iz odgovarajućeg prostora test funkcija zadovoljava varijacijsku jednadžbu $(VF)$:
+\begin{equation*}
+\int_\Omega \nabla u \cdot \nabla w dS = \int_S gw ds.
+\end{equation*}
+$(VF)$ ima smisla i ona određuje slabo rješenje koje je jedinstveno, zadovoljava $(**)_1$ na $\Omega$ i rubni uvjet $(**)_2$ na $S\backslash \{T\}$.
+
+
+
+
+\begin{tvrdnja} \label{tv:3}
+Neka je $(r, \varphi)$ polarni sustav s polom u $T$ i s $x-osi$ koja tangira profil. U maloj okolini šiljka $T$ slabo rješenje ima sljedeći asimptotički oblik:
+\begin{equation} \label{eq:1}
+u(r, \varphi) = a r^{\frac{1}{\beta}} cos\frac{\varphi}{\beta} + Reg(r,\varphi)
+\end{equation}
+gdje je $a \neq 0$ konstanta, a $Reg(r, \varphi)$ označava funkciju kojoj je gradijent ograničen.
+\end{tvrdnja}
+\begin{nap}
+Uočimo da se gradijent od $a r^{\frac{1}{\beta}} cos\frac{\varphi}{\beta}$ ponaša kao $r^{\frac{1}{\beta}-1}$. Zbog pretpostavke $1 < \beta \leq 2$, to je neograničeno; stoga $u \notin H^2(\Omega)$, ali vrijedi $u \in H^1(\Omega)$.
+\end{nap}
+
+\begin{proof}
+Neka je $\Omega_0 = \{ (r, \varphi): 0 < r < r_0, 0 < \varphi < \beta \pi \}$ dovoljno mala okolina točke $T$. Tada $(VF)$ ima sljedeći oblik:
+\begin{equation*}
+\int_{\Omega_0} \nabla u \cdot \nabla w dS = \int_{\Gamma_0} gw ds,
+\end{equation*}
+gdje je $\Gamma_0 = S \cap \overline{\Omega_0}$.
+
+\begin{nap}
+\begin{equation*}
+\nabla_{(r,\varphi)} = \frac{\partial}{\partial r} + \frac{1}{r} \frac{\partial}{\partial \varphi}
+\end{equation*}
+\end{nap}
+
+Zbog gornje napomene slijedi da $(VF)$ ima oblik:
+\begin{equation} \label{eq:2}
+\int_0^{r_0} r \big[ \int_0^{\beta \pi} \Big( \frac{\partial u}{\partial r} \frac{\partial w}{\partial r} + \frac{1}{r^2} \frac{\partial u}{\partial \varphi} \frac{\partial w}{\partial \varphi} \Big) d\varphi \big] dr = \int_0^{r_0} \big[ g(r,0) w(r,0) + g(r, \beta \pi) w(r, \beta \pi) \big] dr.
+\end{equation}
+
+Za $r \in (0, r_0)$, možemo $u(r, \cdot)$ razviti u Fourierov red po kosinusima na intervalu $(0, \beta \pi)$, tj. po sustavu funkcija $\frac{2}{\beta \pi} cos \frac{k \varphi}{\beta}, k = 0, 1, ...$.
+
+\begin{nap}
+Neka je $f$ po dijelovima neprekidna funkcija na $[0, l]$. Proširimo funkciju $f$ po parnosti na $[-l, l]: f(-x) = f(x), x \in (0, l]$ i tom proširenju pridružimo Fourierov red: $b_n = 0, a_n = \frac{1}{l} \int_{-l}^l f(x) cos\frac{n \pi x}{l} dx = \frac{2}{l} \int_0^l f(x) cos\frac{n \pi x}{l} dx$.
+\end{nap}
+
+Dakle, imamo:
+\begin{equation*}
+u(r, \varphi) = \frac{2}{\beta \pi} \frac{u_0(r)}{2} + \sum_{k=1}^{\infty} u_k(r) \frac{2}{\beta \pi} cos \frac{k \varphi}{\beta},
+\end{equation*}
+gdje moramo odrediti $u_k(r), \; k = 0, 1, 2, ...$ \newline
+Nadalje, uzmimo da je $w$ oblika
+\begin{equation*}
+w_j(r, \varphi) = \Psi(r) cos\frac{j \varphi}{\beta}, \; j = 0, 1, 2, ...
+\end{equation*}
+gdje je $\Psi$ funkcija koja se poništava u nekoj okolini točaka $r = 0$ i $r = r_0$.
+Računamo:
+
+\begin{align*}
+\frac{\partial u}{\partial r} &= \frac{2}{\beta \pi} \frac{u_0'(r)}{2} + \sum_{k = 1}^{\infty} u_k'(r) \frac{2}{\beta \pi} cos \frac{k \varphi}{\beta}, \\
+\frac{\partial u}{\partial \varphi} &= - \sum_{k = 1}^{\infty} u_k(r) \frac{2}{\beta \pi} \frac{k}{\beta} sin \frac{k \varphi}{\beta}, \\
+\frac{\partial w_j}{\partial r} &= \Psi '(r) cos \frac{j \varphi}{\beta}, \\
+\frac{\partial w_j}{\partial \varphi} &= - \frac{j}{\beta} \Psi (r) sin \frac{j \varphi}{\beta}
+\end{align*}
+
+Dalje računamo:
+\begin{align*}
+\frac{\partial u}{\partial r} \frac{\partial w_j}{\partial r} &= \Big( \frac{2}{\beta \pi} \frac{u_0'(r)}{2} + \sum_{k = 1}^{\infty} u_k'(r) \frac{2}{\beta \pi} cos \frac{k \varphi}{\beta} \Big) \Psi '(r) cos \frac{j \varphi}{\beta} \\
+&= \frac{2}{\beta \pi} \frac{u_0'(r)}{2} \Psi '(r) cos \frac{j \varphi}{\beta} + \sum_{k = 1}^{\infty} u_k'(r) \Psi '(r) \frac{2}{\beta \pi} cos \frac{k \varphi}{\beta} cos \frac{j \varphi}{\beta}, \\
+\frac{\partial u}{\partial \varphi} \frac{\partial w_j}{\partial r} &= \sum_{k = 1}^{\infty} u_k(r) \frac{2}{\beta \pi} \frac{k}{\beta} sin \frac{k \varphi}{\beta} \frac{j}{\beta} \Psi (r) sin \frac{j \varphi}{\beta} \\
+&= \sum_{k = 1}^{\infty} \frac{k j}{\beta^2} u_k(r) \Psi (r) sin \frac{k \varphi}{\beta} sin \frac{j \varphi}{\beta}.
+\end{align*}
+Uvrštavanjem tih izraza u jednadžbu \ref{eq:2}, zbog ortogonalnosti funkcija $sin$ i $cos$, dobivamo:
+\begin{equation*}
+\int_0^{r_0} r u_j'(r) \Psi'(r) + \Big(\frac{j}{\beta} \Big)^2 \frac{1}{r} u_j(r) \Psi(r) = \int_0^{r_0} \Psi(r) [g(r,0) + (-1)^j g(r, \beta \pi)] dr.
+\end{equation*}
+Označimo $f_j(r) = g(r,0) + (-1)^j g(r, \beta \pi)$.
+Parcijalnom integracijom, te zbog proizvoljosti funkcije $\Psi$ (iz Osnovne leme varijacijskog računa) imamo:
+\begin{equation} \label{eq:3}
+(r u_j'(r))' - \Big(\frac{j}{\beta} \Big)^2 \frac{1}{r} u_j(r) + f_j(r) = 0.
+\end{equation}
+
+\begin{nap}[I.Aganović, K.Veselić: Linearne diferencijalne jednadžbe]
+Rješenja jednadžbe oblika $-(a(x) u'(x))' + b(x) u(x) = g(x)$, gdje su $a(x) = x r(x), \; r(0) \neq 0, \; b(x) = \frac{1}{x} s(x)$, $r$ i $s$ analitičke funkcije na $(0, l)$ i regularne u $x = 0$: \newline
+Korijeni karakteristične jednadžbe su $\sigma_1 = \sigma, \; \sigma_2 = - \sigma$, gdje je $\sigma = \Big( \frac{s(0)}{r(0)} \Big)^{\frac{1}{2}}$. \newline
+Ako $2 \sigma$ nije cijelo, homogena jednadžba $(aw')' - bw = 0$ ima na $(0,l)$ linearno nezavisna rješenja
+\begin{align*}
+w_1(x) &= x^\sigma (1 + c_1 x + ...), \\
+w_2(x) &= x^{-\sigma} (1 + d_1 x + ...).
+\end{align*}
+Ako je $2 \sigma$ cijelo, tada su linearno nezavisna rješenja iste jednadžbe dana sa
+\begin{align*}
+w_1(x) &= x^\sigma (1 + c_1 x + ...), \\
+w_2(x) &= c_0 w_1(x) lnx + x^{-\sigma} (d_0 + d_1 x + ...), \; d_0 \neq 0.
+\end{align*}
+Opće rješenje je dano sa $w(x) = A w_1(x) + B w_2(x), \; A, B \in \mathbb{R}$.
+\end{nap}
+
+U našem slučaju je
+\begin{align*}
+a(x) &= x r(x), \; r(x) = 1, \\
+b(x) &= \frac{1}{x} s(x), \; s(x) = \Big( \frac{j}{\beta} \Big), \\
+\sigma &= \frac{j}{\beta}.
+\end{align*}
+
+Dakle, opće rješenje homogene jednadžbe je oblika
+  \[
+    u_j^0(r) = \left\{
+                \begin{array}{ll}
+                  A_0 + B_0 lnr, \; j = 0, \\
+                  A_j r^{\frac{j}{\beta}} + B_j r^{- \frac{j}{\beta}}, \; j = 1, 2, ...
+                \end{array}
+              \right.
+  \]
+gdje su $A_j, B_j, j = 0, 1, 2, ...$ konstante. \newline
+Razvojem funkcije $f_j(r)$ u McLaurinov red $f_j(r) = \sum_{l=0}^\infty f_{jl} r^l$, te iz činjenice da je partikularno rješenje jednadžbe $(r u'(r))' - \Big( \frac{j}{\beta} \Big)^2 \frac{1}{r} u(r) + r^l = 0$ (npr. varijacijom konstanti) dano sa
+  \[
+    u_{jl}(r) = \left\{
+                \begin{array}{ll}
+                  \Big( \Big( \frac{j}{\beta} \Big)^2 - (l+1)^2 \Big)^{-1} r^{l+1}, \; l+1 \neq \frac{j}{\beta}, \\
+                  - \frac{1}{2} (l+1)^{-1} r^{\frac{j}{\beta}} lnr, \; l+1 = \frac{j}{\beta},
+                \end{array}
+              \right.
+  \]
+dobivamo da je rješenje jednadžbe \ref{eq:3} dano sa
+\begin{equation} \label{eq:4}
+u_j(r) = u_j^0(r) + \sum_{l=0}^\infty f_{jl} u_{jl}(r).
+\end{equation}
+Iz uvjeta ograničenosti funkcije $u$ slijedi $B_j = 0, \; j = 0, 1, 2, ...$. Sada imamo:
+\begin{equation} \label{eq:5}
+u_j(r) = A_j r^{\frac{j}{\beta}} + \sum_{\substack{l=0 \\ l \neq \frac{j}{\beta} - 1}}^\infty f_{jl} \Big( \Big( \frac{j}{\beta} \Big)^2 - (l+1)^2 \Big)^{-1} r^{l+1} - \sum_{\substack{l=0 \\ l = \frac{j}{\beta} - 1}}^\infty f_{jl} \frac{\beta}{2j} r^{\frac{j}{\beta}} lnr, \; j = 0, 1, 2, ...
+\end{equation}
+Koeficijenti $A_j$ se određuju iz uvjeta da se $u_j(r)$ podudara s Fourierovim koeficijentom točnog rješenja $u$ zadane zadaće za dovoljno malo $r_0$: $u_j(r_0) = \frac{2}{\beta \pi} \int_0^{\beta \pi} u(r_0, \varphi) cos \frac{j \varphi}{\beta} d\varphi$.
+
+U konačnici imamo
+\begin{align}
+u(r, \varphi) = \frac{A_0}{2} &+ \frac{2}{\beta \pi} \sum_{k=1}^\infty A_k r^{\frac{k}{\beta}} cos \frac{k \varphi}{\beta} - \sum_{l=1}^\infty \frac{f_{0l}}{2(l+1)^2} r^{l+1} \\ \notag
+&+ \frac{2}{\beta \pi} \sum_{\substack{k > 0 \\ l \geq 0 \\ l \neq \frac{k}{\beta}-1}} f_{kl} \Big( \Big( \frac{k}{\beta} \Big)^2 - (l+1)^2 \Big)^{-1} r^{l+1} cos \frac{k \varphi}{\beta} \\ \notag
+&- \frac{2}{\beta \pi} \sum_{k=1}^\infty \frac{\beta}{2k} r^{\frac{k}{\beta}} lnr cos \frac{k \varphi}{\beta} \sum_{l=\frac{k}{\beta}-1} f_{kl}
+\end{align}
+Stavimo li $a = \frac{2}{\beta \pi} A_1$, dobivamo upravo \ref{eq:1}.
+\end{proof}
+$ $ \newline
+$ $ \newline
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Vratimo se sada na rješavanje problema \ref{pr:2}. \newline
+Pretpostavimo da je $g \in L^2(\Omega)$. \newline
+Neka je $\Phi_0 : \Omega \rightarrow \mathbb{R}$ rješenje sljedeće zadaće:
+\begin{problem} \label{pr:3}
+  \[
+    (P3) \left\{
+                \begin{array}{ll}
+                  \Delta \Phi_0 = 0 \; u \; \Omega, \\
+                  \frac{\partial \Phi_0}{\partial \nu} = g \; na \; S.
+                \end{array}
+              \right.
+  \]
+\end{problem}
+
+Definiramo $v_0 = \nabla \Phi_0$. \newline
+Neka je $u : \Omega \rightarrow \mathbb{R}^2$ rješenje sljedeće zadaće:
+\begin{problem} \label{pr:4}
+\[
+	(P4)_H \left\{
+		\begin{array}{ll}
+			div u = 0 \; u \; \Omega, \\
+			rot u = 0 \; u \; \Omega, \\
+			u \cdot \nu = 0 \; na \; S,
+		\end{array}
+		\right.
+\]
+\end{problem}
+
+\begin{tvrdnja}
+Neka je $v_0 \in L^2(\Omega) \cap C(\Omega)$ definirana kao gore, te neka je $u \in L^2(\Omega) \cap C(\Omega)$ rješenje $(P\ref{pr:4})_H$. Tada je svako rješenje Problema \ref{pr:1} dano sa:
+\begin{equation*}
+v = v_0 + u.
+\end{equation*}
+\end{tvrdnja}
+
+\begin{oznake}
+\begin{flalign*}
+\Sigma & \; prerez \; od \; \Omega \; paralelan \; osi \; x \; koji \; prolazi \; kroz \; siljak, &&\\
+\dot{\Omega} &= \Omega \backslash \Sigma, &&\\
+\Sigma^+ & \; 'gornja' \; strana \; prereza, &&\\
+\Sigma^- & \; 'donja' \; strana \; prereza.
+\end{flalign*}
+\end{oznake}
+
+\begin{definicija}
+Neka je $f : \dot{\Omega} \rightarrow \mathbb{R}$ proizvoljna funkcija. Za $y \in \Sigma$ definiramo
+\begin{align*}
+\Big( f\big|_{\Sigma^+} \Big) (y) &= \lim_{x \rightarrow y} f(x) \;\; (s \; 'gornje' \; strane), \\
+\Big( f\big|_{\Sigma^-} \Big) (y) &= \lim_{x \rightarrow y} f(x) \;\; (s \; 'donje' \; strane),
+\end{align*}
+ako ti limesi postoje; \newline
+te definiramo funkciju $[\;]$ na $\Sigma$ sa
+\begin{equation*}
+[f] = \Big( f\big|_{\Sigma^+} \Big) - \Big( f\big|_{\Sigma^-} \Big).
+\end{equation*}
+\end{definicija}
+
+Neka je $c \in \mathbb{R}$ proizvoljna konstanta, te neka je $q : \dot{\Omega} \rightarrow \mathbb{R}$ rješenje sljedeće zadaće:
+\begin{problem} \label{pr:5}
+\[
+	(P5) \left\{
+		\begin{array}{ll}
+			\Delta q = 0 \; u \; \dot{\Omega}, \\
+			\frac{\partial q}{\partial \nu} = 0 \; na \; S, \\
+			\big[q\big] = c, \\
+			\Big[\frac{\partial q}{\partial \nu}\Big] = 0.
+		\end{array}
+		\right.
+\]
+\end{problem}
+
+\begin{tvrdnja}
+Neka je $u \in L^2(\Omega) \cap C(\Omega)$ rješenje $(P\ref{pr:4})_H$. Tada je $u$ nužno oblika $u = \nabla q$, gdje je $q$ rješenje $(P\ref{pr:5})$.
+\end{tvrdnja}
+
+Neka je $q_1 : \dot{\Omega} \rightarrow \mathbb{R}$ rješenje zadaće:
+\begin{problem} \label{pr:6}
+\[
+	(P6) \left\{
+		\begin{array}{ll}
+			\Delta q_1 = 0 \; u \; \dot{\Omega}, \\
+			\frac{\partial q_1}{\partial \nu} = 0 \; na \; S, \\
+			\big[q_1\big] = 1, \\
+			\Big[\frac{\partial q_1}{\partial \nu}\Big] = 0.
+		\end{array}
+		\right.
+\]
+\end{problem}
+
+Tada je svako rješenje Problema \ref{pr:5} oblika $q = \gamma q_1$, gdje je $\gamma$ proizvoljna konstanta.
+
+\begin{definicija}
+Neka je $A \in IntP, \; A = (a_1, a_2)$ t.d. $A$ leži na pravcu koji sadrži $\Sigma$. Definiramo $\omega_1 : \mathbb{R}^2 \backslash \{A\} \rightarrow \mathbb{R}$ sa
+\[
+\omega_1 = \left\{
+				\begin{array}{ll}
+					\frac{1}{2 \pi} arctg(\frac{x-a_1}{y-a_2}), \; y > a_2, \\
+					-\frac{1}{2} + \frac{1}{2 \pi} arctg(\frac{x-a_1}{y-a_2}), \; y < a_2.
+				\end{array}
+				\right.
+\]
+\end{definicija}
+
+Neka je $\Phi_1 : \Omega \rightarrow \mathbb{R}$ rješenje sljedeće zadaće:
+\begin{problem} \label{pr:7}
+  \[
+    (P7) \left\{
+                \begin{array}{ll}
+                  \Delta \Phi_1 = 0 \; u \; \Omega, \\
+                  \frac{\partial \Phi_1}{\partial \nu} = -\frac{\partial \omega_1}{\partial \nu} \; na \; S.
+                \end{array}
+              \right.
+  \]
+\end{problem}
+
+\begin{tvrdnja}
+Neka je $\omega_1$ definiran kao gore, te neka je $\Phi_1 \in H^1(\Omega)$ rješenje $(P\ref{pr:7})$. Tada je svako rješenje Problema \ref{pr:6} oblika
+\begin{equation*}
+q_1 = \Phi_1 + \omega_1.
+\end{equation*}
+\end{tvrdnja}
+
+Konačno, dobili smo da je rješenje Problema \ref{pr:1} oblika
+\begin{equation*}
+v = v_0 + u = \nabla \Phi_1 + u = \nabla \Phi_1 + \gamma \nabla q = \nabla (\Phi_0 + \gamma(\Phi_1 + \omega_1))
+\end{equation*}
+
+Iz Tvrdnje \ref{tv:3} slijedi da su $\Phi_0$ i $\Phi_1$ oblika
+\begin{align*}
+\Phi_0 &= a_0 r^{\frac{1}{\beta}} cos \frac{\varphi}{\beta} + Reg_0(r, \varphi), \\
+\Phi_1 &= a_1 r^{\frac{1}{\beta}} cos \frac{\varphi}{\beta} + Reg_1(r, \varphi),
+\end{align*}
+gdje su $a_0 \neq 0$, $a_1 \neq 0$ konstante. \newline
+Stoga je singularitet u brzini $v$ uzrokovan vodećim članom
+\begin{equation} \label{eq:6}
+(a_0 + \gamma a_1) r^{\frac{1}{\beta}} cos \frac{\varphi}{\beta}.
+\end{equation}
+
+\begin{tvrdnja}[Princip Kutta-Žukovskog] \label{tv:13}
+U okolini šiljka brzina je ograničena.
+\end{tvrdnja}
+
+Iz Tvrdnje \ref{tv:3} sada slijedi da je $a_0 + \gamma a_1 = 0$.
+
+\pagebreak
+
+\subsubsection*{Literatura}
+\begin{enumerate}
+\item I. Aganović: Uvod u rubne zadaće mehanike kontinuuma, Element, 2003.
+\item J. Tambača: Problem optjecanja profila sa šiljkom, diplomski rad, 1994.
+\item I. Aganović, K. Veselić: Linearne diferencijalne jednadžbe, Element, 1997.
+\end{enumerate}
+
+\end{document}

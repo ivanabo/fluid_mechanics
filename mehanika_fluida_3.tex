@@ -1,0 +1,115 @@
+\documentclass[a4paper,oneside,12pt]{memoir} % jednostrano: promijeniti twoside u oneside
+
+% Paket inputenc omogucava direktno unosenje hrvatskih dijakritickih znakova 
+% opcija utf8 za unicode (unix, linux, mac)
+% opcija cp1250 za windowse
+\usepackage[utf8]{inputenc}  % ukoliko se koristi XeLaTeX onda je \usepackage{xunicode}\usepackage{xltxtra}
+
+% Stil za diplomski, unutra je ukljucena podrska za hrvatski jezik
+\usepackage{diplomski}
+% bibliografija na hrvatskom
+\usepackage[languagenames,fixlanguage,croatian]{babelbib} % zahtijeva datoteku croatian.bdf
+% hiperlinkovi 
+\usepackage[pdftex]{hyperref} % ukoliko se koristi XeLaTeX onda je \usepackage[xetex]{hyperref}
+
+% Odabir familije fontova:
+% koristenjem XeLaTeX-a mogu se koristiti svi fontovi instalirani na racunalu, npr
+% \defaultfontfeatures{Mapping=tex-text}
+% \setmainfont[Ligatures={Common}]{Hoefler Text}
+% ili
+% \newcommand{\nas}[1]{\fontspec{Adobe Garamond Pro}\fontsize{24pt}{24pt}\color{Chocolate}\selectfont #1}
+% i onda \nas{Naslov ...}
+\usepackage{txfonts} % times new roman 
+
+\usepackage{amsmath}
+
+\newtheorem*{lema}{Lema}
+
+% Paket graphicx sluzi za manipuliranje grafikom 
+\usepackage[pdftex]{graphicx} % ukoliko se koristi XeLaTeX onda je \usepackage[xetex]{graphicx}
+% Paket amsmath je vec ukljucen
+% Dodatno definirane matematicke okoline:
+% teorem (okolina: thm), lema (okolina: lem), korolar (okolina: cor),
+% propozicija (okolina: prop), definicija (okolina: defn), napomena (okolina: rem),
+% slutnja (okolina: conj), primjer (okolina: exa), dokaz (okolina: proof)
+% Definirane su naredbe za ispisivanje skupova N, Z, Q, R i C
+% Definirane su naredbe za funkcije koje se u hrvatskoj notaciji oznacavaju drukcije 
+% nego u americkoj: tg, ctg, ... (\tgh za tangens hiperbolni)
+% Takodjer su definirane naredbe za Ker i Im (da bi se razlikovala od naredbe za imaginarni dio kompleksnog
+% broja, naredba se zove \slika).
+
+\pagestyle{headings}
+% uz paket fancyhdr mogu se lako kreirati fancy zaglavlja i podnozja
+\pagestyle{empty}
+
+\begin{document}
+
+\subsubsection*{Mehanika fluida \\ Ivana Bobinac, Zadatak 3}	
+$ $
+\begin{lema}[Gronwall]
+Neka su $\alpha, u \in C[a, b], \; \beta \in C^1[a, b], \; a, b \in \mathbb{R}, a < b$. Nadalje, neka su $\beta, u \geq 0$ t.d. vrijedi
+\begin{equation} \label{eq:1}
+u(t) \leq \beta(t) + \int_a^t \alpha(\tau) u(\tau) d\tau, \; t \in [a, b].
+\end{equation}
+Tada je
+\begin{equation} \label{eq:2}
+u(t) \leq \beta(a) exp\Big( \int_a^t \alpha(\tau) d\tau \Big) + \int_a^t \beta'(\tau) exp\Big( \int_{\tau}^t \alpha(z) dz \Big) d\tau, \; t \in [a, b].
+\end{equation}
+\end{lema}
+
+\begin{proof}
+Uočimo sljedeće:
+\begin{align*}
+- \int_a^t \beta(\tau) \frac{d}{d\tau} \Big( exp\Big( \int_{\tau}^t \alpha(r) dr \Big) \Big) d\tau &= (parcijalna \; integracija) \\
+&= - \beta(\tau) exp\Big( \int_{\tau}^t \alpha(r) dr \Big) \Big|_{\tau=a}^{\tau=t} + \int_a^t \beta'(\tau) exp\Big( \int_{\tau}^t \alpha(r) dr \Big) d\tau \\
+&= - \beta(t) + \beta(a) exp\Big( \int_a^t \alpha(r) dr \Big) + \int_a^t \beta'(\tau) exp\Big( \int_{\tau}^t \alpha(r) dr \Big) d\tau.
+\end{align*}
+
+S druge strane, za izraz na lijevoj strani vrijedi sljedeće:
+\begin{equation*}
+- \int_a^t \beta(\tau) \frac{d}{d\tau} \Big( exp\Big( \int_{\tau}^t \alpha(r) dr \Big) \Big) d\tau = \int_a^t \beta(\tau) exp \Big( \int_{\tau}^t \alpha(r) dr \Big) \alpha(\tau) d\tau.
+\end{equation*}
+
+Sada imamo:
+\begin{equation*}
+\beta(t) + \int_a^t \alpha(\tau) \beta(\tau) exp \Big( \int_{\tau}^t \alpha(r) dr \Big) d\tau = \beta(a) exp\Big( \int_a^t \alpha(r) dr \Big) + \int_a^t \beta'(\tau) exp\Big( \int_{\tau}^t \alpha(r) dr \Big) d\tau.
+\end{equation*}
+
+Pokažimo da (\ref{eq:1}) implicira sljedeću nejednakost:
+\begin{equation} \label{eq:3}
+u(t) \leq \beta(t) + \int_a^t \alpha(\tau) \beta(\tau) exp \Big( \int_{\tau}^t \alpha(r) dr \Big) d\tau.
+\end{equation}
+Time će biti dokazana tražena nejednakost (\ref{eq:2}). \newline
+Definirajmo
+\begin{equation}
+v(s) = exp \Big( - \int_a^s \beta(r) dr \Big) \int_a^s \beta(r) u(r) dr, \; s \in [a, b].
+\end{equation}
+Deriviranjem tog izraza dobivamo
+\begin{align*}
+v'(s) &= - exp \Big( - \int_a^s \beta(r) dr \Big) \beta(s) \int_a^s \beta(r) u(r) dr + exp \Big( - \int_a^s \beta(r) dr \Big) \beta(s) u(s) \\
+&= \underbrace{\Big( u(s) - \int_a^s \beta(r) u(r) dr \Big)}_{\leq \alpha(s)} \underbrace{\beta(s)}_{\geq 0} \underbrace{exp \Big( - \int_a^s \beta(r) dr \Big)}_{\geq 0} \\
+&\leq \alpha(s) \beta(s) exp \Big( - \int_a^s \beta(r) dr \Big).
+\end{align*}
+Sada integriranjem od $a$ do $t$ dobivamo
+\begin{equation}
+\int_a^t v'(s) ds \leq \int_a^t \alpha(s) \beta(s) exp \Big( - \int_a^s \beta(r) dr \Big) ds.
+\end{equation}
+Lijeva strana je jednaka $v(t) - v(a)$, no iz definicije od $v$ vidimo da je $v(a) = 0$ pa zapravo imamo ocjenu za $v(t)$:
+\begin{equation} \label{eq:6}
+v(t) \leq \int_a^t \alpha(s) \beta(s) exp \Big( - \int_a^s \beta(r) dr \Big) ds.
+\end{equation}
+Definicija od $v$ također očito implicira jednakost
+\begin{equation} \label{eq:7}
+\int_a^t \beta(r) u(r) dr = exp \Big( \int_a^t \beta(r) dr \Big) v(t).
+\end{equation}
+
+(\ref{eq:6}) i (\ref{eq:7}) skupa daju
+\begin{align*}
+\int_a^t \beta(r) u(r) dr &\leq exp \Big( \int_a^t \beta(r) dr \Big) \int_a^t \alpha(s) \beta(s) exp \Big( - \int_a^s \beta(r) dr \Big) ds \\
+&= \int_a^t \alpha(s) \beta(s) exp \Big( \int_a^t \beta(r) dr - \int_a^s \beta(r) dr \Big) ds \\
+&= \int_a^t \alpha(s) \beta(s) exp \Big( \int_s^t \beta(r) dr \Big) ds 
+\end{align*}
+
+Sada primjenom ove posljednje ocjene u (\ref{eq:1}) slijedi upravo (\ref{eq:3}).
+\end{proof}
+\end{document}
